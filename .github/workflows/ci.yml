@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install Protobuf compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Install dependencies
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv pip install -e ".[dev]"
+
+      - name: Generate Protobuf code
+        run: |
+          source .venv/bin/activate
+          make proto
+
+      - name: Run linters
+        run: |
+          source .venv/bin/activate
+          make lint
+
+      - name: Run type checking
+        run: |
+          source .venv/bin/activate
+          make type-check
+
+      - name: Check code formatting
+        run: |
+          source .venv/bin/activate
+          make format-check
+
+      - name: Run tests with coverage
+        run: |
+          source .venv/bin/activate
+          make test-cov
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t schemas-demo:test .
+
+      - name: Test Docker image
+        run: |
+          docker run -d -p 8000:8000 --name test-container schemas-demo:test
+          sleep 5
+          curl -f http://localhost:8000/health || exit 1
+          docker stop test-container

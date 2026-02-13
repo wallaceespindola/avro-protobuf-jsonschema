@@ -1,0 +1,163 @@
+# Pre-commit hooks configuration
+# Install pre-commit: pip install pre-commit
+# Install hooks: pre-commit install
+# Run manually: pre-commit run --all-files
+# Update hooks: pre-commit autoupdate
+
+repos:
+  # ==========================================================================
+  # General File Checks
+  # ==========================================================================
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      # Identify files with syntax errors
+      - id: check-ast
+      - id: check-yaml
+        args: ['--unsafe']
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+
+      # Trim trailing whitespace
+      - id: trailing-whitespace
+        args: [--markdown-template='']
+
+      # Security checks
+      - id: detect-private-key
+
+      # File size checks
+      - id: check-large-files
+        args: ['--maxkb=1000']
+
+      # Merge conflict checks
+      - id: check-merge-conflict
+
+      # Ensure executable files have proper shebang
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  # ==========================================================================
+  # Python Code Formatting
+  # ==========================================================================
+
+  - repo: https://github.com/psf/black
+    rev: 23.12.0
+    hooks:
+      - id: black
+        language_version: python3.12
+        args: ['--line-length=120', '--target-version=py312']
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ['--profile=black', '--line-length=120', '--py=312']
+
+  # ==========================================================================
+  # Python Linting
+  # ==========================================================================
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-comprehensions
+        args:
+          - '--max-line-length=120'
+          - '--extend-ignore=E203,W503'
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-ll', '--skip=B101']
+        exclude: ^tests/
+
+  # ==========================================================================
+  # Type Checking
+  # ==========================================================================
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.7.1
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - types-requests
+          - types-python-dotenv
+        args: [--ignore-missing-imports]
+        exclude: ^(tests/|.*_pb2\.py$)
+
+  # ==========================================================================
+  # YAML / Markdown Linting
+  # ==========================================================================
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: [--strict]
+        exclude: ^\.github/
+
+  - repo: https://github.com/markdownlint/markdownlint
+    rev: v0.12.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+
+  # ==========================================================================
+  # Docstring Formatting
+  # ==========================================================================
+
+  - repo: https://github.com/PyCQA/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        exclude: ^(tests/|.*_pb2\.py$|setup\.py$)
+        args: [--convention=google]
+
+  # ==========================================================================
+  # Security Scanning
+  # ==========================================================================
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
+    hooks:
+      - id: forbid-crlf
+      - id: forbid-tabs
+
+  # ==========================================================================
+  # Git Checks
+  # ==========================================================================
+
+  - repo: local
+    hooks:
+      - id: check-requirements-lock
+        name: Check requirements.txt is up to date
+        entry: bash -c 'test -f requirements.txt && (pip-compile --quiet pyproject.toml || true)'
+        language: system
+        files: pyproject.toml
+        pass_filenames: false
+        stages: [commit]
+
+# =============================================================================
+# Configuration
+# =============================================================================
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false
