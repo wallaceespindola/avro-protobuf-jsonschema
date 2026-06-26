@@ -8,7 +8,7 @@ avro-protobuf-jsonschema-context.md
 from __future__ import annotations
 
 from io import BytesIO
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastavro import parse_schema, schemaless_reader, schemaless_writer
@@ -51,7 +51,7 @@ class UserJSON(BaseModel):
 
     id: int = Field(..., ge=1, description="User ID (must be >= 1)")
     name: str = Field(..., min_length=1, description="User name")
-    email: Optional[str] = Field(None, description="User email (optional)")
+    email: str | None = Field(None, description="User email (optional)")
     is_active: bool = Field(True, description="Whether user is active")
 
     model_config = {
@@ -110,7 +110,7 @@ async def protobuf_user(request: Request) -> Response:
     try:
         msg.ParseFromString(body)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid protobuf payload: {e}")
+        raise HTTPException(status_code=400, detail=f"Invalid protobuf payload: {e}") from e
 
     if msg.id < 1:
         raise HTTPException(status_code=422, detail="id must be >= 1")
@@ -166,7 +166,7 @@ async def avro_user(request: Request) -> Response:
     try:
         record = cast(dict[str, Any], schemaless_reader(BytesIO(body), AVRO_USER_SCHEMA))  # type: ignore[call-arg]
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid avro payload: {e}")
+        raise HTTPException(status_code=400, detail=f"Invalid avro payload: {e}") from e
 
     if record.get("id", 0) < 1:
         raise HTTPException(status_code=422, detail="id must be >= 1")

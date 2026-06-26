@@ -118,9 +118,9 @@ pre-commit: ## Run all pre-commit hooks on all files
 	pre-commit run --all-files
 	@echo "$(GREEN)✓ Pre-commit hooks completed$(NC)"
 
-lint: ## Run all linters (flake8, mypy)
-	@echo "$(BLUE)Running flake8...$(NC)"
-	uv run flake8 app tests examples clients
+lint: ## Run all linters (ruff, mypy)
+	@echo "$(BLUE)Running ruff...$(NC)"
+	uv run ruff check app tests examples clients
 	@echo "$(BLUE)Running mypy...$(NC)"
 	uv run mypy app
 
