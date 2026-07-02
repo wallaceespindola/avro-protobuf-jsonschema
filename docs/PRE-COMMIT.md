@@ -11,6 +11,7 @@ pip install pre-commit
 ```
 
 Or using your package manager:
+
 ```bash
 # macOS with Homebrew
 brew install pre-commit
@@ -22,11 +23,13 @@ apt-get install pre-commit
 ### 2. Initialize hooks
 
 Run the setup script:
+
 ```bash
 bash .pre-commit-setup.sh
 ```
 
 Or manually:
+
 ```bash
 pre-commit install
 pre-commit install --hook-type pre-push
@@ -41,11 +44,13 @@ Pre-commit hooks run automatically on `git commit`. If any checks fail, the comm
 ### Manual Checks
 
 Run pre-commit on all files:
+
 ```bash
 pre-commit run --all-files
 ```
 
 Run a specific hook:
+
 ```bash
 pre-commit run black --all-files
 pre-commit run isort --all-files
@@ -55,6 +60,7 @@ pre-commit run mypy --all-files
 ### Skip Hooks
 
 If you need to bypass pre-commit checks (not recommended):
+
 ```bash
 git commit --no-verify
 ```
@@ -62,6 +68,7 @@ git commit --no-verify
 ### Update Hooks
 
 Update all hooks to their latest versions:
+
 ```bash
 pre-commit autoupdate
 ```
@@ -69,6 +76,7 @@ pre-commit autoupdate
 ## Configured Hooks
 
 ### File Checks
+
 - **check-ast**: Verify Python files have valid syntax
 - **check-yaml**: Check YAML files for syntax errors
 - **check-json**: Check JSON files for syntax errors
@@ -84,19 +92,23 @@ pre-commit autoupdate
 - **forbid-tabs**: Ensure no tabs are used
 
 ### Python Code Formatting
+
 - **black**: Format code according to Black style guide
 - **isort**: Sort imports alphabetically and by section
 
 ### Python Linting
+
 - **flake8**: Check for PEP 8 compliance and common errors
   - Includes: flake8-bugbear, flake8-comprehensions
 - **bandit**: Security linting to detect common vulnerabilities
 - **pydocstyle**: Check docstring conventions (Google style)
 
 ### Type Checking
+
 - **mypy**: Static type checker for Python
 
 ### YAML/Markdown
+
 - **yamllint**: Check YAML files for style issues
 - **markdownlint**: Check Markdown files for style issues
 
@@ -105,6 +117,7 @@ pre-commit autoupdate
 ### Hook fails with "command not found"
 
 Make sure all dependencies are installed:
+
 ```bash
 pip install -r requirements.txt
 pip install -e ".[dev]"
@@ -113,6 +126,7 @@ pip install -e ".[dev]"
 ### Hook takes too long
 
 Some hooks (like mypy) can be slow. You can modify `.pre-commit-config.yaml` to:
+
 - Skip certain hooks: Remove or comment out the hook entry
 - Run on fewer files: Add `files:` pattern to the hook
 - Run only on changed files: Modify the hook to exclude `--all-files`
@@ -120,6 +134,7 @@ Some hooks (like mypy) can be slow. You can modify `.pre-commit-config.yaml` to:
 ### Fix files automatically
 
 Some hooks can auto-fix issues:
+
 ```bash
 # Format with Black and isort
 black .
@@ -131,6 +146,7 @@ Then commit the changes.
 ### Exclude files from hooks
 
 You can exclude files in `.pre-commit-config.yaml` using the `exclude:` field:
+
 ```yaml
 - repo: https://github.com/psf/black
   hooks:

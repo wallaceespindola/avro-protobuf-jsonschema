@@ -18,21 +18,27 @@ All `make` commands and development workflows in one place.
 ## Setup & Installation
 
 ### `make setup`
+
 Full project setup (run this first)
+
 - Creates virtual environment with uv
 - Installs all dependencies
 - Creates .env file if not exists
 
 ### `make install`
+
 Install production dependencies only
 
 ### `make install-dev`
+
 Install with development dependencies
 
 ### `make sync`
+
 Sync dependencies from pyproject.toml
 
 ### `make update`
+
 Update all dependencies to latest versions
 
 ---
@@ -40,12 +46,15 @@ Update all dependencies to latest versions
 ## Development Server
 
 ### `make run` or `make dev`
+
 Start FastAPI development server with auto-reload
-- URL: http://localhost:8000
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+
+- URL: <http://localhost:8000>
+- Swagger UI: <http://localhost:8000/docs>
+- ReDoc: <http://localhost:8000/redoc>
 
 ### `make run-prod`
+
 Start production server (4 workers, no reload)
 
 ---
@@ -53,11 +62,14 @@ Start production server (4 workers, no reload)
 ## Protobuf
 
 ### `make proto`
+
 Generate Python code from Protobuf schema
+
 - Input: `schemas/user.proto`
 - Output: `schemas/user_pb2.py`, `schemas/user_pb2.pyi`
 
 ### `make proto-clean`
+
 Remove generated Protobuf files
 
 ---
@@ -65,33 +77,43 @@ Remove generated Protobuf files
 ## Testing
 
 ### `make test`
+
 Run all tests with pytest
 
 ### `make test-cov`
+
 Run tests with coverage report
+
 - Generates HTML report in `htmlcov/`
 - Generates XML report for CI
 - Shows terminal coverage summary
 
 ### `make test-watch`
+
 Run tests in watch mode (auto-rerun on changes)
 
 ### `make test-fast`
+
 Run tests, stop on first failure
 
 ### `make test-failed`
+
 Re-run only failed tests from last run
 
 ### `make test-verbose`
+
 Run tests with extra output
 
 ### `make test-json`
+
 Run only JSON endpoint tests
 
 ### `make test-avro`
+
 Run only Avro endpoint tests
 
 ### `make test-protobuf`
+
 Run only Protobuf endpoint tests
 
 ---
@@ -99,21 +121,27 @@ Run only Protobuf endpoint tests
 ## Code Quality
 
 ### `make lint`
+
 Run all linters (flake8 + mypy)
 
 ### `make format`
+
 Format code with black and isort
 
 ### `make format-check`
+
 Check formatting without modifying files
 
 ### `make type-check`
+
 Run type checking with mypy
 
 ### `make check`
+
 Run all checks (format + lint + type)
 
 ### `make ci`
+
 Run all CI checks (check + test with coverage)
 
 ---
@@ -121,22 +149,29 @@ Run all CI checks (check + test with coverage)
 ## Examples & Clients
 
 ### `make examples`
+
 Run all standalone examples
+
 - Avro example
 - JSON Schema example
 - Protobuf example (if generated)
 
 ### `make example-avro`
+
 Run Avro example only
 
 ### `make example-json`
+
 Run JSON Schema example only
 
 ### `make example-protobuf`
+
 Run Protobuf example only
 
 ### `make clients`
+
 Test all API endpoints (requires server running)
+
 - Tests JSON endpoint
 - Tests Avro endpoint
 - Tests Protobuf endpoint (if generated)
@@ -146,21 +181,28 @@ Test all API endpoints (requires server running)
 ## Docker
 
 ### `make docker`
+
 Build Docker image
+
 - Image name: `schemas-demo:latest`
 
 ### `make docker-up`
+
 Start containers with docker-compose
+
 - Builds image
 - Starts API service on port 8000
 
 ### `make docker-down`
+
 Stop and remove containers
 
 ### `make docker-logs`
+
 View container logs (follow mode)
 
 ### `make docker-shell`
+
 Open bash shell in running container
 
 ---
@@ -168,16 +210,20 @@ Open bash shell in running container
 ## Cleanup
 
 ### `make clean`
+
 Clean generated files and caches
+
 - Removes `__pycache__`
 - Removes `.pytest_cache`
 - Removes `.mypy_cache`
 - Removes coverage reports
 
 ### `make clean-proto`
+
 Remove generated Protobuf files
 
 ### `make clean-all`
+
 Clean everything including virtual environment
 
 ---
@@ -185,10 +231,13 @@ Clean everything including virtual environment
 ## Information
 
 ### `make help`
+
 Show all available commands (this is the default target)
 
 ### `make info`
+
 Show project information
+
 - Python version
 - uv version
 - Virtual environment status
@@ -197,9 +246,11 @@ Show project information
 - API endpoints
 
 ### `make deps`
+
 Show installed dependencies with versions
 
 ### `make tree`
+
 Show project tree structure (requires `tree` command)
 
 ---
@@ -257,6 +308,7 @@ make docker-down    # Stop containers
 ## Color Output
 
 Commands use colors to make things easier to read:
+
 - 🔵 **Blue**: Info messages
 - 🟢 **Green**: Success messages
 - 🟡 **Yellow**: Warnings
@@ -267,6 +319,7 @@ Commands use colors to make things easier to read:
 ## Environment Variables
 
 All commands respect `.env` file settings:
+
 - Author information
 - Application settings
 - See `.env.example` for available options

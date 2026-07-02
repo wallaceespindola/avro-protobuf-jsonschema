@@ -3,7 +3,9 @@
 ## Files Created
 
 ### 1. `.pre-commit-config.yaml`
+
 The main pre-commit configuration file that defines all hooks to run. Includes:
+
 - **General file checks**: YAML, JSON, TOML, XML validation, line ending fixes, merge conflict detection
 - **Python formatting**: Black (code formatter), isort (import sorter)
 - **Python linting**: flake8 (with bugbear and comprehensions), bandit (security), pydocstyle (docstrings)
@@ -12,7 +14,9 @@ The main pre-commit configuration file that defines all hooks to run. Includes:
 - **Git checks**: Local hook for requirements verification
 
 ### 2. `.pre-commit-setup.sh`
+
 Executable setup script that:
+
 - Checks if pre-commit is installed
 - Installs pre-commit if needed
 - Installs all hooks
@@ -20,13 +24,17 @@ Executable setup script that:
 - Provides usage instructions
 
 ### 3. `.pre-commit-validate.sh`
+
 Executable validation script that:
+
 - Validates the `.pre-commit-config.yaml` syntax
 - Checks pre-commit installation
 - Verifies configuration is valid
 
 ### 4. `PRE-COMMIT.md`
+
 Full documentation including:
+
 - Installation instructions
 - Usage examples
 - List of all configured hooks with descriptions
@@ -36,13 +44,17 @@ Full documentation including:
 - Best practices
 
 ### 5. `.github/workflows/pre-commit.yml`
+
 GitHub Actions workflow that:
+
 - Runs pre-commit checks on push and pull requests
 - Runs additional code quality checks (mypy, pytest with coverage)
 - Uploads coverage reports to codecov
 
 ### 6. `pyproject.toml` - Updated
+
 Added missing dev dependencies:
+
 - `bandit>=1.7.5` - Security linting
 - `pydocstyle>=6.3.0` - Docstring style checking
 - `pre-commit>=3.5.0` - Pre-commit framework
@@ -54,6 +66,7 @@ Added missing dev dependencies:
 ## Quick Start
 
 ### Initial Setup
+
 ```bash
 # Option 1: Use the setup script
 bash .pre-commit-setup.sh
@@ -65,11 +78,13 @@ pre-commit install --hook-type pre-push
 ```
 
 ### Validate Configuration
+
 ```bash
 bash .pre-commit-validate.sh
 ```
 
 ### Run Hooks Manually
+
 ```bash
 # Run all hooks on all files
 pre-commit run --all-files
@@ -125,16 +140,19 @@ pre-commit validate-config       # Validate YAML syntax
 ## Hooks Explained
 
 ### Formatting Hooks (Auto-fix)
+
 - **black**: Formats Python code
 - **isort**: Sorts imports
 
 ### Validation Hooks (Check only)
+
 - **check-yaml**: Validates YAML syntax
 - **check-json**: Validates JSON syntax
 - **check-toml**: Validates TOML syntax
 - **check-xml**: Validates XML syntax
 
 ### Quality Hooks (Can fail)
+
 - **flake8**: PEP 8 compliance and error detection
 - **mypy**: Static type checking
 - **bandit**: Security vulnerability detection
@@ -143,6 +161,7 @@ pre-commit validate-config       # Validate YAML syntax
 - **markdownlint**: Markdown style checking
 
 ### Cleanup Hooks (Auto-fix)
+
 - **end-of-file-fixer**: Ensures files end with newline
 - **trailing-whitespace**: Removes trailing whitespace
 - **forbid-crlf**: Converts CRLF to LF
@@ -151,12 +170,14 @@ pre-commit validate-config       # Validate YAML syntax
 ## Configuration Files
 
 All tool configurations are in `pyproject.toml` except:
+
 - `.flake8`: Flake8 configuration (doesn't support pyproject.toml)
 - `.pre-commit-config.yaml`: Pre-commit hook definitions
 
 ## Tips and Tricks
 
 ### Auto-fix Issues
+
 ```bash
 # Format and sort imports
 black .
@@ -168,12 +189,15 @@ git commit
 ```
 
 ### Skip Hooks (Use with caution)
+
 ```bash
 git commit --no-verify
 ```
 
 ### Run Only Specific Hooks
+
 Edit `.pre-commit-config.yaml` and comment out unwanted hooks:
+
 ```yaml
 # - repo: https://github.com/PyCQA/mypy
 #   hooks:
@@ -181,7 +205,9 @@ Edit `.pre-commit-config.yaml` and comment out unwanted hooks:
 ```
 
 ### Exclude Files from Hooks
+
 Add `exclude:` pattern to hook configuration:
+
 ```yaml
 - repo: https://github.com/psf/black
   hooks:
@@ -192,13 +218,16 @@ Add `exclude:` pattern to hook configuration:
 ## Integration with IDEs
 
 ### VS Code
+
 Install extensions:
+
 - Python
 - Pylance
 - Black Formatter
 - isort
 
 Configure settings:
+
 ```json
 {
   "[python]": {
@@ -212,19 +241,24 @@ Configure settings:
 ```
 
 ### PyCharm
+
 - Enable "Run pre-commit hooks before commit"
 - Settings → Tools → Python Integrated Tools → Default Test Runner (pytest)
 
 ## Troubleshooting
 
 ### Pre-commit fails with "command not found"
+
 Install all dependencies:
+
 ```bash
 pip install -e ".[dev]"
 ```
 
 ### MyPy is slow
+
 Add `exclude:` pattern to skip large files:
+
 ```yaml
 - repo: https://github.com/pre-commit/mirrors-mypy
   hooks:
@@ -233,13 +267,16 @@ Add `exclude:` pattern to skip large files:
 ```
 
 ### Hook modifies files and fails
+
 This is expected. The fix the modified files and commit:
+
 ```bash
 git add .
 git commit
 ```
 
 ### Need to update specific hook
+
 ```bash
 pre-commit autoupdate --repo https://github.com/psf/black
 ```
@@ -247,6 +284,7 @@ pre-commit autoupdate --repo https://github.com/psf/black
 ## CI/CD Integration
 
 The `.github/workflows/pre-commit.yml` GitHub Actions workflow automatically:
+
 - Runs pre-commit on all push and pull requests
 - Uploads coverage reports
 - Provides feedback on code quality
@@ -254,11 +292,13 @@ The `.github/workflows/pre-commit.yml` GitHub Actions workflow automatically:
 ## Next Steps
 
 1. **Install hooks**:
+
    ```bash
    bash .pre-commit-setup.sh
    ```
 
 2. **Run on all files**:
+
    ```bash
    pre-commit run --all-files
    ```
@@ -266,12 +306,14 @@ The `.github/workflows/pre-commit.yml` GitHub Actions workflow automatically:
 3. **Fix any issues** - some hooks auto-fix, others require manual fixes
 
 4. **Commit changes**:
+
    ```bash
    git add .
    git commit -m "Fix pre-commit issues"
    ```
 
 5. **Read the documentation**:
+
    ```bash
    cat PRE-COMMIT.md
    ```
@@ -289,6 +331,7 @@ The `.github/workflows/pre-commit.yml` GitHub Actions workflow automatically:
 ## Support
 
 For issues or questions:
+
 1. Check `PRE-COMMIT.md` for detailed documentation
 2. Run `pre-commit --help` for command help
 3. Check `.pre-commit-config.yaml` for hook configurations

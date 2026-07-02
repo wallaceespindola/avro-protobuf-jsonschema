@@ -20,6 +20,7 @@ cd schemas-demo
 ```
 
 This will:
+
 - Create virtual environment with uv
 - Install all dependencies
 - Create .env file from template
@@ -28,16 +29,19 @@ This will:
 ### Manual Installation
 
 1. **Install uv (if not already installed):**
+
    ```bash
    curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
 2. **Clone and navigate to the project:**
+
    ```bash
    cd schemas-demo
    ```
 
 3. **Install dependencies using uv:**
+
    ```bash
    uv venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -45,12 +49,14 @@ This will:
    ```
 
 4. **Configure environment:**
+
    ```bash
    cp .env .env
    # Edit .env with your author information
    ```
 
 5. **Install Protocol Buffers compiler:**
+
    ```bash
    # macOS
    brew install protobuf
@@ -62,6 +68,7 @@ This will:
    ```
 
 6. **Generate Protobuf Python code:**
+
    ```bash
    make proto
    # or
@@ -79,9 +86,10 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
+
+- **Swagger UI**: <http://localhost:8000/docs>
+- **ReDoc**: <http://localhost:8000/redoc>
+- **Health Check**: <http://localhost:8000/health>
 
 ## API Endpoints
 
@@ -189,6 +197,7 @@ make test-protobuf    # Protobuf endpoint only
 ```
 
 **Test Suite:**
+
 - ✅ `test_json_endpoint.py` - JSON/Pydantic validation
 - ✅ `test_avro_endpoint.py` - Avro serialization
 - ✅ `test_protobuf_endpoint.py` - Protobuf serialization
@@ -216,7 +225,7 @@ python clients/test_avro_endpoint.py
 
 ## Docker Deployment
 
-### Build and run with Docker Compose:
+### Build and run with Docker Compose
 
 ```bash
 make docker-up
@@ -245,6 +254,7 @@ nano .env
 ```
 
 Example `.env` configuration:
+
 ```env
 AUTHOR_NAME=Wallace Espindola
 AUTHOR_EMAIL=wallace@example.com
@@ -256,6 +266,7 @@ AUTHOR_SPEAKERDECK=https://speakerdeck.com/wallacese
 ```
 
 This information is automatically included in:
+
 - API documentation (Swagger/ReDoc)
 - Root endpoint (`/`)
 - Author attribution
@@ -293,18 +304,21 @@ make docker-down       # Stop Docker containers
 ## When to Use Each Format
 
 ### JSON Schema
+
 - ✅ Public-facing REST APIs
 - ✅ Browser-based applications
 - ✅ Human-readable payloads needed
 - ✅ OpenAPI/Swagger documentation
 
 ### Protocol Buffers
+
 - ✅ Internal microservices communication
 - ✅ High-performance requirements
 - ✅ Minimal bandwidth usage
 - ✅ gRPC services
 
 ### Apache Avro
+
 - ✅ Data streaming platforms (Kafka)
 - ✅ Long-term data storage
 - ✅ Schema evolution critical
@@ -352,12 +366,14 @@ mypy app
 ### Protobuf module not found
 
 If you see "Protobuf module not generated":
+
 1. Install `protoc`: `brew install protobuf` (macOS) or `apt-get install protobuf-compiler` (Linux)
 2. Run: `make proto` or `./generate_proto.sh`
 
 ### Port already in use
 
 If port 8000 is already in use, change the port:
+
 ```bash
 uvicorn app.main:app --reload --port 8001
 ```
@@ -380,12 +396,14 @@ uvicorn app.main:app --reload --port 8001
 ## Contributing
 
 Before committing:
+
 ```bash
 make format    # Format code
 make ci        # Run all checks (lint, type-check, tests)
 ```
 
 Python development guidelines:
+
 - **Development**: See [`ai/agents/python-developer/AGENT.md`](.ai/agents/python-developer/AGENT.md)
 - **Testing**: See [`ai/skills/python-testing-strategy/SKILL.md`](.ai/skills/python-testing-strategy/SKILL.md)
 - **Code Review**: See [`ai/skills/python-code-review/SKILL.md`](.ai/skills/python-code-review/SKILL.md)

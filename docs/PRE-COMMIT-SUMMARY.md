@@ -11,6 +11,7 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
 ### 1. **Configuration Files**
 
 #### `.pre-commit-config.yaml` (NEW)
+
 - Main pre-commit configuration file
 - Defines 19 hooks across 6 categories:
   - File validation (YAML, JSON, TOML, XML)
@@ -22,6 +23,7 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
 - Includes GitHub Actions CI/CD configuration
 
 ### `pyproject.toml` (UPDATED)
+
 - Added dev dependencies:
   - `pre-commit>=3.5.0`
   - `bandit>=1.7.5`
@@ -32,6 +34,7 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
   - `flake8-comprehensions>=3.14.0`
 
 ### `.gitignore` (UPDATED)
+
 - Added `.pre-commit-cache/` to ignore pre-commit cache files
 
 ---
@@ -39,6 +42,7 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
 ### 2. **Setup Scripts** (Executable)
 
 #### `.pre-commit-setup.sh` (NEW)
+
 - Automated setup script
 - Checks and installs pre-commit if needed
 - Installs git hooks
@@ -47,6 +51,7 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
 - **Run this to get started**: `bash .pre-commit-setup.sh`
 
 #### `.pre-commit-validate.sh` (NEW)
+
 - Validates `.pre-commit-config.yaml` syntax
 - Checks pre-commit installation
 - Verifies configuration is valid
@@ -57,7 +62,9 @@ Full pre-commit hooks setup for the avro-protobuf-jsonschema project with docume
 ### 3. **Documentation Files**
 
 #### `PRE-COMMIT.md` (NEW) - Full Documentation
+
 Comprehensive 200+ line guide covering:
+
 - Installation instructions
 - Usage examples (manual and automatic)
 - Complete hook descriptions
@@ -69,7 +76,9 @@ Comprehensive 200+ line guide covering:
 - Resources and links
 
 #### `PRE-COMMIT-SETUP.md` (NEW) - Detailed Setup Guide
+
 Complete setup guide including:
+
 - Explanation of all created files
 - Quick start instructions
 - Hook execution flow diagram
@@ -83,7 +92,9 @@ Complete setup guide including:
 - Links to external resources
 
 #### `PRE-COMMIT-QUICKREF.md` (NEW) - Quick Reference
+
 One-page quick reference with:
+
 - One-liner setup command
 - Most common commands
 - Hook reference table (purpose + auto-fix capability)
@@ -94,7 +105,9 @@ One-page quick reference with:
 - Performance tips
 
 #### `PRE-COMMIT-WORKFLOW.md` (NEW) - Visual Workflow Guide
+
 Detailed workflow guide with:
+
 - ASCII visual workflow diagrams
 - Hook execution sequence
 - Decision tree for failures
@@ -112,7 +125,9 @@ Detailed workflow guide with:
 ### 4. **CI/CD Integration**
 
 #### `.github/workflows/pre-commit.yml` (NEW)
+
 GitHub Actions workflow that:
+
 - Runs on push and pull requests
 - Validates pre-commit configuration
 - Runs all pre-commit hooks
@@ -126,11 +141,13 @@ GitHub Actions workflow that:
 ## Quick Start Guide
 
 ### Option 1: Automated Setup (Recommended)
+
 ```bash
 bash .pre-commit-setup.sh
 ```
 
 ### Option 2: Manual Setup
+
 ```bash
 pip install pre-commit
 pre-commit install
@@ -143,6 +160,7 @@ pre-commit run --all-files
 ## What Gets Checked
 
 ### Phase 1: File Validation
+
 - ✓ Line endings (auto-fixes)
 - ✓ Trailing whitespace (auto-fixes)
 - ✓ YAML syntax
@@ -153,10 +171,12 @@ pre-commit run --all-files
 - ✓ Merge conflicts
 
 ### Phase 2: Security
+
 - ✓ Private keys detection
 - ✓ Security vulnerabilities (bandit)
 
 ### Phase 3: Python Code Quality
+
 - ✓ Code formatting (black, auto-fixes)
 - ✓ Import sorting (isort, auto-fixes)
 - ✓ PEP 8 compliance (flake8)
@@ -164,6 +184,7 @@ pre-commit run --all-files
 - ✓ Docstring style (pydocstyle)
 
 ### Phase 4: Documentation
+
 - ✓ YAML style (yamllint)
 - ✓ Markdown style (markdownlint)
 
@@ -331,6 +352,7 @@ git commit --no-verify
 ## Summary
 
 This pre-commit hooks implementation provides:
+
 - **Automated code quality checks** on every commit
 - **19 comprehensive hooks** covering formatting, linting, security, and type checking
 - **Extensive documentation** for setup and usage

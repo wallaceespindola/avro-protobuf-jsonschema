@@ -112,17 +112,20 @@ schemas-demo/
 ## Technologies Used
 
 ### Core
+
 - **Python 3.10+**
 - **FastAPI** - Async web framework
 - **uvicorn** - ASGI server
 - **Pydantic v2** - Data validation
 
 ### Serialization Libraries
+
 - **fastavro** - Apache Avro implementation
 - **protobuf** - Google Protocol Buffers
 - **jsonschema** - JSON Schema validation
 
 ### Development Tools
+
 - **uv** - Fast Python package manager
 - **pytest** - Testing framework
 - **black** - Code formatter
@@ -130,6 +133,7 @@ schemas-demo/
 - **mypy** - Static type checker
 
 ### Deployment
+
 - **Docker** - Containerization
 - **docker-compose** - Multi-container orchestration
 
@@ -170,9 +174,10 @@ python clients/test_avro_endpoint.py
 ## API Documentation
 
 Once running, visit:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-- **OpenAPI JSON**: http://localhost:8000/openapi.json
+
+- **Swagger UI**: <http://localhost:8000/docs>
+- **ReDoc**: <http://localhost:8000/redoc>
+- **OpenAPI JSON**: <http://localhost:8000/openapi.json>
 
 ---
 
@@ -190,6 +195,7 @@ AUTHOR_SPEAKERDECK=https://speakerdeck.com/wallacese
 ```
 
 This information appears in:
+
 - API documentation contact section
 - Root endpoint (`GET /`) response
 - OpenAPI specification
@@ -201,6 +207,7 @@ This information appears in:
 This project follows patterns from the AI Agents Framework:
 
 ### Python Development
+
 - **Agent**: Python Developer ([`ai/agents/python-developer/AGENT.md`](.ai/agents/python-developer/AGENT.md))
 - **Skills**:
   - `python-coder` - Complete project generation
@@ -209,6 +216,7 @@ This project follows patterns from the AI Agents Framework:
   - `fastapi-setup` - FastAPI project structure
 
 ### Code Quality
+
 - Type hints throughout
 - Async/await patterns
 - Pydantic data validation
@@ -217,12 +225,14 @@ This project follows patterns from the AI Agents Framework:
 - isort import organization
 
 ### Testing
+
 - Unit tests for all endpoints
 - Integration tests with TestClient
 - Fixtures for shared test data
 - Coverage reporting
 
 ### DevOps
+
 - **Agent**: DevOps Engineer ([`ai/agents/devops-engineer/AGENT.md`](.ai/agents/devops-engineer/AGENT.md))
 - **Skills**:
   - `docker-setup` - Multi-stage Dockerfile
@@ -233,6 +243,7 @@ This project follows patterns from the AI Agents Framework:
 ## Comparison to Reference Document
 
 ✅ **All code examples implemented**:
+
 - Avro serialization/deserialization (Section 5.1)
 - Protobuf serialization/deserialization (Section 5.2)
 - JSON Schema validation (Section 5.3)
@@ -242,6 +253,7 @@ This project follows patterns from the AI Agents Framework:
 - Client examples (Section 7)
 
 ✅ **Additional features**:
+
 - Complete test suite
 - Docker deployment
 - Environment configuration
@@ -268,7 +280,7 @@ Based on the reference document comparison:
 1. **Run the setup**: `./setup.sh`
 2. **Configure .env**: Add your author information
 3. **Start the server**: `make run`
-4. **Explore the API**: Visit http://localhost:8000/docs
+4. **Explore the API**: Visit <http://localhost:8000/docs>
 5. **Run examples**: Try standalone examples
 6. **Test endpoints**: Use client scripts
 7. **Run tests**: `make test`

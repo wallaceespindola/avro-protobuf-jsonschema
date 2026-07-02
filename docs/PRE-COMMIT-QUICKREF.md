@@ -1,6 +1,7 @@
 # Pre-commit Quick Reference
 
 ## One-liner Setup
+
 ```bash
 pip install pre-commit && pre-commit install && pre-commit run --all-files
 ```
@@ -80,6 +81,7 @@ git commit --no-verify
 ## IDE Integration
 
 ### VS Code
+
 ```json
 {
   "[python]": {
@@ -90,6 +92,7 @@ git commit --no-verify
 ```
 
 ### PyCharm
+
 Settings → Tools → Python Integrated Tools → Enable "Run pre-commit hooks before commit"
 
 ## Performance Tips

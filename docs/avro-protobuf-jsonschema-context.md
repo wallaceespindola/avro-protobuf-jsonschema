@@ -1,4 +1,5 @@
 # Avro vs Protobuf vs JSON Schema
+
 *A practical, developer-focused comparison — plus code examples and FastAPI endpoints (JSON / Protobuf / Avro).*
 
 ---
@@ -38,12 +39,15 @@ The goal was to compare them in terms of **where they fit**, **trade-offs**, **u
 ## 2) Quick definitions
 
 ### Avro
+
 A binary serialization format with strong support for **schema evolution**; widely used in **Kafka + data pipeline** ecosystems.
 
 ### Protobuf
+
 A compact binary format with `.proto` definitions and **code generation**; widely used for **internal APIs** and **gRPC**.
 
 ### JSON Schema
+
 A standard for describing and validating **JSON documents**; commonly used for **REST APIs** and **OpenAPI** contracts.
 
 ---
@@ -66,9 +70,11 @@ A standard for describing and validating **JSON documents**; commonly used for *
 ## 4) Which one is “best” and which is most used?
 
 ### Most used overall
+
 **JSON Schema (via JSON / REST / OpenAPI)** tends to be the most broadly used because web APIs and browser-facing systems commonly exchange JSON.
 
 ### “Best” depends on the boundary
+
 - **Best performance & smallest payloads:** **Protobuf**
 - **Best schema evolution for long-lived streaming data:** **Avro**
 - **Best for public/browser-friendly APIs:** **JSON Schema**
@@ -82,11 +88,13 @@ A common real-world approach is to use **more than one** in different layers of 
 ### 5.1 Avro (Python) — schema + serialize/deserialize
 
 **Install**
+
 ```bash
 pip install fastavro
 ```
 
 **Example**
+
 ```python
 from io import BytesIO
 from fastavro import writer, reader, parse_schema
@@ -127,11 +135,13 @@ print(decoded)
 ### 5.2 Protobuf — `.proto` + serialize/deserialize (Python)
 
 **Install**
+
 ```bash
 pip install protobuf
 ```
 
 **`user.proto`**
+
 ```proto
 syntax = "proto3";
 
@@ -146,11 +156,13 @@ message User {
 ```
 
 **Generate Python**
+
 ```bash
 protoc --python_out=. user.proto
 ```
 
 **Use it**
+
 ```python
 import user_pb2
 
@@ -176,11 +188,13 @@ print("Decoded:", u2)
 ### 5.3 JSON Schema — schema + validate JSON
 
 **Install**
+
 ```bash
 pip install jsonschema
 ```
 
 **Example**
+
 ```python
 from jsonschema import Draft202012Validator
 
@@ -215,11 +229,13 @@ for e in errors:
 ### 6.0 Setup
 
 **Install**
+
 ```bash
 pip install fastapi uvicorn pydantic fastavro protobuf jsonschema
 ```
 
 **Run**
+
 ```bash
 uvicorn main:app --reload
 ```
@@ -417,11 +433,13 @@ async def avro_user(request: Request) -> Response:
 ## 7) Client examples to test each endpoint
 
 ### 7.1 JSON (curl)
+
 ```bash
 curl -X POST "http://127.0.0.1:8000/json/user"   -H "Content-Type: application/json"   -d '{"id":1,"name":"Wallace","email":"wallace@example.com","is_active":true}'
 ```
 
 ### 7.2 Protobuf (Python client)
+
 ```python
 import requests
 import user_pb2
@@ -442,6 +460,7 @@ print(u2)
 ```
 
 ### 7.3 Avro (Python client)
+
 ```python
 import requests
 from io import BytesIO
@@ -503,6 +522,7 @@ This is not overengineering — it is **boundary-driven format selection**.
 - **Avro**: best for long-lived event data; for HTTP you typically use “schemaless” Avro with an agreed schema; for Kafka you usually add a schema registry.
 
 ### Content types
+
 - JSON: `application/json`
 - Protobuf: `application/x-protobuf` (often) or `application/octet-stream`
 - Avro: `application/avro` (often) or `application/octet-stream`
@@ -510,6 +530,7 @@ This is not overengineering — it is **boundary-driven format selection**.
 ---
 
 ### TL;DR
+
 - **Most used**: JSON / JSON Schema (especially with REST/OpenAPI)
 - **Fastest**: Protobuf
 - **Best for evolution in pipelines**: Avro

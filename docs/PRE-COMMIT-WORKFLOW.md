@@ -139,6 +139,7 @@ HOOK FAILED?
 ## Common Scenarios
 
 ### Scenario 1: Code Format Issue
+
 ```bash
 $ git commit -m "Add new feature"
   → black reformats file
@@ -154,6 +155,7 @@ $ git commit -m "Add new feature"
 ```
 
 ### Scenario 2: Type Error
+
 ```bash
 $ git commit -m "Refactor function"
   → mypy detects type mismatch
@@ -168,6 +170,7 @@ $ git commit -m "Refactor function"
 ```
 
 ### Scenario 3: YAML Syntax Error
+
 ```bash
 $ git commit -m "Update config"
   → yamllint detects bad syntax
@@ -302,11 +305,13 @@ PRE-COMMIT NOT WORKING?
 ## Key Concepts
 
 ### Hook Stages
+
 - **commit**: Run on `git commit` (default)
 - **push**: Run on `git push` (configured)
 - **manual**: Run only with `pre-commit run --hook-stage manual`
 
 ### Skip a Hook
+
 ```bash
 # Temporarily
 git commit --no-verify
@@ -316,6 +321,7 @@ git commit --no-verify
 ```
 
 ### Auto-fix vs Manual
+
 - **Auto-fix**: black, isort, end-of-file-fixer, trailing-whitespace
   - Files are modified automatically
   - Requires: `git add . && git commit`
@@ -325,6 +331,7 @@ git commit --no-verify
   - Then: `git add . && git commit`
 
 ### Local vs CI/CD
+
 - **Local**: Runs on developer machine before push
 - **CI/CD**: Runs on GitHub Actions after push
   - Provides additional feedback
@@ -335,6 +342,7 @@ git commit --no-verify
 ## Questions?
 
 See other docs:
+
 - `PRE-COMMIT.md` - Main documentation
 - `PRE-COMMIT-SETUP.md` - Setup guide
 - `PRE-COMMIT-QUICKREF.md` - Quick reference

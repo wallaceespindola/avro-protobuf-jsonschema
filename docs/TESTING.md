@@ -217,6 +217,7 @@ The test suite uses pytest fixtures defined in `tests/conftest.py`:
 Target coverage: **> 85%**
 
 Current coverage areas:
+
 - ✅ All API endpoints
 - ✅ Request validation
 - ✅ Error handling
@@ -225,6 +226,7 @@ Current coverage areas:
 - ✅ Content type validation
 
 Excluded from coverage:
+
 - Generated Protobuf code (`*_pb2.py`)
 - Test files themselves
 - Type checking blocks
@@ -232,10 +234,12 @@ Excluded from coverage:
 ## CI/CD Integration
 
 Tests run automatically in GitHub Actions on:
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop`
 
 CI workflow (`.github/workflows/ci.yml`):
+
 1. Tests on Python 3.10, 3.11, 3.12
 2. Linting (flake8)
 3. Type checking (mypy)
@@ -338,10 +342,10 @@ Before committing:
 
 ## Resources
 
-- **Pytest Documentation**: https://docs.pytest.org/
-- **FastAPI Testing**: https://fastapi.tiangolo.com/tutorial/testing/
-- **Coverage.py**: https://coverage.readthedocs.io/
-- **pytest-cov**: https://pytest-cov.readthedocs.io/
+- **Pytest Documentation**: <https://docs.pytest.org/>
+- **FastAPI Testing**: <https://fastapi.tiangolo.com/tutorial/testing/>
+- **Coverage.py**: <https://coverage.readthedocs.io/>
+- **pytest-cov**: <https://pytest-cov.readthedocs.io/>
 
 ---
 

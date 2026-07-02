@@ -133,9 +133,12 @@ Thumbs.db
 # ============================================================================
 # Generated files
 # ============================================================================
-# Protobuf generated files
+# Protobuf generated files (ignored everywhere except the committed schemas stubs,
+# which CI needs so mypy/pytest can resolve `schemas.user_pb2`)
 *_pb2.py
 *_pb2.pyi
+!schemas/user_pb2.py
+!schemas/user_pb2.pyi
 
 # IDE generated
 .vscode/settings.json
