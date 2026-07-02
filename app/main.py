@@ -164,7 +164,7 @@ async def avro_user(request: Request) -> Response:
 
     body = await request.body()
     try:
-        record = cast(dict[str, Any], schemaless_reader(BytesIO(body), AVRO_USER_SCHEMA))  # type: ignore[call-arg]
+        record = cast(dict[str, Any], schemaless_reader(BytesIO(body), AVRO_USER_SCHEMA, None))
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid avro payload: {e}") from e
 
@@ -218,4 +218,4 @@ def health() -> dict:
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)  # nosec B104 - must bind all interfaces to be reachable in Docker

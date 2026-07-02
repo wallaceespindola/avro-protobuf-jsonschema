@@ -318,7 +318,7 @@ PRE-COMMIT-CHECKLIST.md      This file
 
 ## 🎉 Ready to Use!
 
-All components are in place and configured. 
+All components are in place and configured.
 
 **Start here:**
 ```bash

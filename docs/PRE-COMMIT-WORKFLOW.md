@@ -143,10 +143,10 @@ HOOK FAILED?
 $ git commit -m "Add new feature"
   → black reformats file
   → isort reorders imports
-  
+
   Review changes:
 $ git diff
-  
+
   Stage and retry:
 $ git add .
 $ git commit -m "Add new feature"
@@ -157,10 +157,10 @@ $ git commit -m "Add new feature"
 ```bash
 $ git commit -m "Refactor function"
   → mypy detects type mismatch
-  
+
   Fix the code:
 $ vim app/main.py  # Add type hints
-  
+
   Retry:
 $ git add .
 $ git commit -m "Refactor function"
@@ -171,10 +171,10 @@ $ git commit -m "Refactor function"
 ```bash
 $ git commit -m "Update config"
   → yamllint detects bad syntax
-  
+
   Fix the YAML:
 $ vim .github/workflows/ci.yml
-  
+
   Retry:
 $ git add .
 $ git commit -m "Update config"
@@ -319,7 +319,7 @@ git commit --no-verify
 - **Auto-fix**: black, isort, end-of-file-fixer, trailing-whitespace
   - Files are modified automatically
   - Requires: `git add . && git commit`
-  
+
 - **Manual fix**: flake8, mypy, bandit
   - Developer must read and fix errors
   - Then: `git add . && git commit`
