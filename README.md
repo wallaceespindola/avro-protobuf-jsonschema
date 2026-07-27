@@ -8,14 +8,13 @@ All examples come from the reference document: [`avro-protobuf-jsonschema-contex
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.11 or higher
 - [uv](https://github.com/astral-sh/uv) (recommended) or pip
 - Protocol Buffers compiler (`protoc`)
 
 ### Quick Installation (Recommended)
 
 ```bash
-cd schemas-demo
 ./setup.sh
 ```
 
@@ -37,7 +36,7 @@ This will:
 2. **Clone and navigate to the project:**
 
    ```bash
-   cd schemas-demo
+   cd avro-protobuf-jsonschema
    ```
 
 3. **Install dependencies using uv:**
@@ -341,7 +340,7 @@ Event Streaming / Data Platform (Avro + Kafka + Schema Registry)
 ## Reference Documentation
 
 - **Main Reference**: [`avro-protobuf-jsonschema-context.md`](docs/avro-protobuf-jsonschema-context.md) - Deep dive into format comparisons
-- **AI Agents Framework**: [`ai/`](../ai/) - 10 agents and 95 skills for development automation
+- **AI Agents Framework**: [`.ai/`](.ai/) - 10 agents and 95 skills for development automation
 
 ## Development
 
@@ -404,9 +403,9 @@ make ci        # Run all checks (lint, type-check, tests)
 
 Python development guidelines:
 
-- **Development**: See [`ai/agents/python-developer/AGENT.md`](.ai/agents/python-developer/AGENT.md)
-- **Testing**: See [`ai/skills/python-testing-strategy/SKILL.md`](.ai/skills/python-testing-strategy/SKILL.md)
-- **Code Review**: See [`ai/skills/python-code-review/SKILL.md`](.ai/skills/python-code-review/SKILL.md)
+- **Development**: See [`.ai/agents/python-developer/AGENT.md`](.ai/agents/python-developer/AGENT.md)
+- **Testing**: See [`.ai/skills/python-testing-strategy/SKILL.md`](.ai/skills/python-testing-strategy/SKILL.md)
+- **Code Review**: See [`.ai/skills/python-code-review/SKILL.md`](.ai/skills/python-code-review/SKILL.md)
 
 ## License
 
@@ -417,4 +416,4 @@ This project is part of the avro-protobuf-jsonschema comparison repository.
 **Author**: Wallace Espindola
 **Reference**: [avro-protobuf-jsonschema-context.md](docs/avro-protobuf-jsonschema-context.md)
 
-*Also check out the [AI Agents Framework](../ai/) with 10 agents and 95 skills for development automation.*
+*Also check out the [AI Agents Framework](.ai/) with 10 agents and 95 skills for development automation.*
