@@ -6,7 +6,7 @@ Two easy ways to bring `avro-protobuf-jsonschema.pptx` into Google Slides.
 
 1. Open [Google Slides](https://slides.google.com) and create a blank presentation (or open one you have)
 2. Go to **File → Import slides**
-3. Click the **Upload** tab and select `presentations/avro-protobuf-jsonschema.pptx`
+3. Click the **Upload** tab and select `docs/presentations/avro-protobuf-jsonschema.pptx`
 4. Select **All** slides, then click **Import slides**
 
 ## Option 2: Open the PPTX directly from Drive
@@ -19,17 +19,17 @@ Fonts note: the deck uses standard fonts (Helvetica/Arial for text, Courier New 
 
 ## Marp alternative (HTML / PDF)
 
-`presentations/slides.md` is a [Marp](https://marp.app) deck. Export it without PowerPoint at all:
+`docs/presentations/slides.md` is a [Marp](https://marp.app) deck. Export it without PowerPoint at all:
 
 ```bash
 # HTML
-npx @marp-team/marp-cli presentations/slides.md -o presentations/slides.html
+npx @marp-team/marp-cli docs/presentations/slides.md -o docs/presentations/slides.html
 
 # PDF
-npx @marp-team/marp-cli presentations/slides.md --pdf -o presentations/slides.pdf
+npx @marp-team/marp-cli docs/presentations/slides.md --pdf -o docs/presentations/slides.pdf
 
 # PPTX (Marp's own export, an alternative to the bundled one)
-npx @marp-team/marp-cli presentations/slides.md --pptx -o presentations/slides-marp.pptx
+npx @marp-team/marp-cli docs/presentations/slides.md --pptx -o docs/presentations/slides-marp.pptx
 ```
 
 A PDF export also uploads to Google Drive and presents fine, and Speaker Deck accepts it directly.
