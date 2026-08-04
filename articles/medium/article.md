@@ -10,9 +10,9 @@
 
 A few weeks ago I got asked a question that sounds simple until you actually have to answer it: "Should this new service send JSON or Protobuf?"
 
-The honest answer was "it depends," which is the kind of answer nobody wants in a design review. So instead of hand-waving through it again, I built something concrete: a small FastAPI app with three endpoints — one for JSON, one for Protobuf, one for Avro — all serializing the exact same `User` object. Same fields, same validation rules, three completely different wire formats.
+The honest answer was "it depends," which is the kind of answer nobody wants in a design review. So instead of hand-waving through it again, I built something concrete: a small FastAPI app with three endpoints (one for JSON, one for Protobuf, one for Avro), all serializing the exact same `User` object. Same fields, same validation rules, three completely different wire formats.
 
-That project became [avro-protobuf-jsonschema](https://github.com/wallaceespindola/avro-protobuf-jsonschema), and this article walks through what I found. Not benchmarks, not vendor slides — just the actual code, the actual trade-offs, and the decision framework I ended up using.
+That project became [avro-protobuf-jsonschema](https://github.com/wallaceespindola/avro-protobuf-jsonschema), and this article walks through what I found. Not benchmarks, not vendor slides. Just the actual code, the actual trade-offs and the decision framework I ended up using.
 
 If you've ever sat in a meeting arguing about serialization formats without anyone pulling up real code, this is for you.
 
@@ -24,9 +24,9 @@ Get it wrong and you end up with one of two painful outcomes. Either your APIs a
 
 The three formats in this comparison solve this problem from completely different angles:
 
-- **JSON Schema** validates and describes JSON documents — the same JSON your browser already speaks.
+- **JSON Schema** validates and describes JSON documents, the same JSON your browser already speaks.
 - **Protocol Buffers (Protobuf)** compiles a `.proto` file into generated code and produces a compact binary payload.
-- **Apache Avro** also produces binary, but it leans hard into schema evolution — the schema travels with (or alongside) the data instead of living only in generated code.
+- **Apache Avro** also produces binary, but it leans hard into schema evolution: the schema travels with (or alongside) the data instead of living only in generated code.
 
 None of these is "the best." Each one is the best *for a specific boundary in your system*. Let's build all three and see what that actually feels like in practice.
 
@@ -41,10 +41,10 @@ email: string (optional)
 is_active: boolean
 ```
 
-Then I implemented it three times — once as a Pydantic model for JSON, once as a `.proto` message for Protobuf, and once as an Avro schema — and wired each one into a FastAPI endpoint. The full project structure looks like this:
+Then I implemented it three times (once as a Pydantic model for JSON, once as a `.proto` message for Protobuf and once as an Avro schema) and wired each one into a FastAPI endpoint. The full project structure looks like this:
 
 ```
-schemas-demo/
+avro-protobuf-jsonschema/
 ├── app/
 │   └── main.py              # FastAPI application with all endpoints
 ├── schemas/
@@ -65,11 +65,11 @@ python examples/avro_example.py
 python examples/protobuf_example.py   # requires: make proto
 ```
 
-Let's go through each format the way I did — starting with the one you already know.
+Let's go through each format the way I did, starting with the one you already know.
 
 ## JSON Schema: the format you're already speaking
 
-JSON doesn't need an introduction. What's less obvious is that FastAPI is generating a JSON Schema for you automatically, every time you define a Pydantic model. You get validation, documentation, and a contract, all from one class:
+JSON doesn't need an introduction. What's less obvious is that FastAPI is generating a JSON Schema for you automatically, every time you define a Pydantic model. You get validation, documentation and a contract, all from one class:
 
 ```python
 from fastapi import FastAPI
@@ -121,7 +121,7 @@ for e in errors:
 
 Run that against a bad payload and you get exactly what you'd want in an error log: `id: 0 is less than the minimum of 1`, `name: '' is too short`, `is_active: 'yes' is not of type 'boolean'`. Readable, debuggable, no decoder needed.
 
-**What it felt like:** easy. No build step, no generated code to keep in sync, and every payload is human-readable in a network tab or a log file. The cost is size — JSON is text, so field names and punctuation travel with every single message. For a public API or anything a browser touches, that trade is worth it every time.
+**What it felt like:** easy. No build step, no generated code to keep in sync, and every payload is human-readable in a network tab or a log file. The cost is size: JSON is text, so field names and punctuation travel with every single message. For a public API or anything a browser touches, that trade is worth it every time.
 
 ## Protobuf: fast, but you pay for it in ceremony
 
@@ -158,7 +158,7 @@ u2 = user_pb2.User()
 u2.ParseFromString(data)
 ```
 
-The FastAPI endpoint has to work harder here, because Protobuf payloads arrive as raw bytes with no field names attached — you need the schema to make sense of them at all:
+The FastAPI endpoint has to work harder here, because Protobuf payloads arrive as raw bytes with no field names attached. You need the schema to make sense of them at all:
 
 ```python
 from fastapi import Request, Response, HTTPException
@@ -168,7 +168,9 @@ from schemas import user_pb2
 async def protobuf_user(request: Request) -> Response:
     ct = request.headers.get("content-type", "").split(";")[0].strip()
     if ct not in ("application/x-protobuf", "application/octet-stream"):
-        raise HTTPException(status_code=415, detail="Use Content-Type: application/x-protobuf")
+        raise HTTPException(
+            status_code=415, detail="Use Content-Type: application/x-protobuf or application/octet-stream"
+        )
 
     body = await request.body()
     msg = user_pb2.User()
@@ -186,13 +188,13 @@ async def protobuf_user(request: Request) -> Response:
 
 Notice that validation — `if msg.id < 1` — has to happen manually, because unlike Pydantic, Protobuf doesn't know anything about your business rules. It only knows the wire format.
 
-**What it felt like:** fast to run, slower to set up. Every schema change means re-running `protoc` and shipping generated code alongside your app. I hit this directly in the repo itself: the endpoint checks `PROTOBUF_AVAILABLE` and returns a 503 if you forgot to run `make proto`. That's not a bug, it's the format being honest about its dependency on code generation. The payoff is a genuinely compact binary payload with no field names traveling over the wire — worth it when you control both ends of the connection, like in an internal gRPC service.
+**What it felt like:** fast to run, slower to set up. Every schema change means re-running `protoc` and shipping generated code alongside your app. I hit this directly in the repo itself: the endpoint checks `PROTOBUF_AVAILABLE` and returns a 503 if you forgot to run `make proto`. That's not a bug, it's the format being honest about its dependency on code generation. The payoff is a genuinely compact binary payload with no field names traveling over the wire, which is worth it when you control both ends of the connection, like in an internal gRPC service.
 
 One gotcha worth flagging: in proto3, an empty string and a missing string look identical on the wire. If you need to know the difference between "the email field was never set" and "the email field was set to empty," you need `optional` or a wrapper type. It's a small detail, but it's bitten more than one team I've worked with.
 
 ## Avro: binary, but the schema travels with the conversation
 
-Avro sits in an interesting middle ground. It's binary like Protobuf, but instead of generating code from a `.proto` file, you work with a schema as a plain Python dict — and both sides need to agree on it at read and write time.
+Avro sits in an interesting middle ground. It's binary like Protobuf, but instead of generating code from a `.proto` file, you work with a schema as a plain Python dict, and both sides need to agree on it at read and write time.
 
 Here's the schema and a full round-trip, straight from `examples/avro_example.py`:
 
@@ -268,11 +270,11 @@ async def avro_user(request: Request) -> Response:
     return Response(content=out.getvalue(), media_type="application/avro")
 ```
 
-**What it felt like:** the schema is a plain dict, not a generated class, so there's no compile step in the loop — you can iterate on it as fast as you can edit Python. That's genuinely nice for prototyping. But that flexibility comes with responsibility: since the payload has no field names or type tags of its own, the reader absolutely must have a compatible schema, or decoding fails outright. That's exactly why Avro is almost never used standalone in production — it's usually paired with a schema registry (Kafka's, for example) so producers and consumers can look up the exact schema version a message was written with.
+**What it felt like:** the schema is a plain dict, not a generated class, so there's no compile step in the loop: you can iterate on it as fast as you can edit Python. That's genuinely nice for prototyping. But that flexibility comes with responsibility: since the payload has no field names or type tags of its own, the reader absolutely must have a compatible schema, or decoding fails outright. That's exactly why Avro is almost never used standalone in production. It's usually paired with a schema registry (Kafka's, for example) so producers and consumers can look up the exact schema version a message was written with.
 
 ## Side-by-side: what actually changes between the three
 
-Here's the comparison table straight from the project's own reference doc — no invented numbers, just the qualitative shape of the trade-offs:
+Here's the comparison table straight from the project's own reference doc: no invented numbers, just the qualitative shape of the trade-offs.
 
 | Feature | JSON | Protobuf | Avro |
 |---|---|---|---|
@@ -283,7 +285,7 @@ Here's the comparison table straight from the project's own reference doc — no
 | Browser friendly | Yes | No | No |
 | Typical home | Public REST APIs | gRPC, internal services | Kafka, data pipelines |
 
-Notice what doesn't change: none of these formats is objectively "faster" or "better" in a vacuum. The table is really describing three different bets on what matters most — readability, raw compactness, or long-term schema flexibility.
+Notice what doesn't change: none of these formats is objectively "faster" or "better" in a vacuum. The table is really describing three different bets on what matters most: readability, raw compactness or long-term schema flexibility.
 
 ## What each format is actually for
 
@@ -337,11 +339,11 @@ Swagger UI is at `http://localhost:8000/docs` if you want to poke at the JSON en
 
 Three formats, one entity, and a lot less confusion than I started with. Here's the short version:
 
-- JSON Schema is the format you already know — pick it for anything public or browser-facing.
-- Protobuf trades a build step for a genuinely compact, fast binary payload — pick it for internal service-to-service calls.
-- Avro trades standalone simplicity for serious schema evolution — pick it for anything flowing through a data pipeline or event stream.
+- JSON Schema is the format you already know: pick it for anything public or browser-facing.
+- Protobuf trades a build step for a genuinely compact, fast binary payload: pick it for internal service-to-service calls.
+- Avro trades standalone simplicity for serious schema evolution: pick it for anything flowing through a data pipeline or event stream.
 - None of them is wrong. The mistake is picking one format for every boundary in your system instead of matching the format to the job.
-- The best way to understand the trade-offs isn't reading a comparison table — it's writing the same object three times and feeling the difference yourself.
+- The best way to understand the trade-offs isn't reading a comparison table. It's writing the same object three times and feeling the difference yourself.
 
 If you want to go deeper, the full reference doc in the repo covers client examples for testing each endpoint and more notes on the pitfalls I ran into along the way.
 

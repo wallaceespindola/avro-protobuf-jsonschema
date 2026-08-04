@@ -202,7 +202,7 @@ curl -X POST "http://127.0.0.1:8000/json/user" \
 
 ### Hit the Protobuf endpoint with Python
 
-Curl can't build a Protobuf payload for you, so the repo ships a small Python client instead - `clients/test_protobuf_endpoint.py`:
+Curl can't build a Protobuf payload for you, so the repo ships a small Python client instead. Here's the core of `clients/test_protobuf_endpoint.py`, trimmed of its print statements:
 
 ```python
 from schemas import user_pb2
@@ -228,7 +228,7 @@ Run it with `python clients/test_protobuf_endpoint.py` once the server is up.
 
 ### Hit the Avro endpoint with Python
 
-Same story here - `clients/test_avro_endpoint.py`:
+Same story here, the core of `clients/test_avro_endpoint.py`:
 
 ```python
 from io import BytesIO

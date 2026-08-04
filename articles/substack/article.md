@@ -45,10 +45,12 @@ Defining a user in Avro is just a schema dictionary:
 USER_SCHEMA = {
     "type": "record",
     "name": "User",
+    "namespace": "com.example",
     "fields": [
         {"name": "id", "type": "long"},
         {"name": "name", "type": "string"},
         {"name": "email", "type": ["null", "string"], "default": None},
+        {"name": "is_active", "type": "boolean", "default": True},
     ],
 }
 ```
@@ -60,6 +62,7 @@ message User {
   int64 id = 1;
   string name = 2;
   string email = 3;
+  bool is_active = 4;
 }
 ```
 
@@ -69,7 +72,8 @@ And JSON Schema, if you're using Pydantic, you barely have to think about it. Yo
 class UserJSON(BaseModel):
     id: int = Field(..., ge=1)
     name: str = Field(..., min_length=1)
-    email: Optional[str] = None
+    email: str | None = None
+    is_active: bool = True
 ```
 
 That last point is worth sitting with for a second. With JSON and Pydantic, the "schema work" is almost invisible — it falls out of writing normal code. With Protobuf, you're running a compiler step (`protoc`) before you can use your own message type. With Avro, you're usually pairing the schema with a registry if you're doing anything serious in Kafka. That operational overhead is the real cost of the extra guarantees you get, and it's easy to forget until you're the one debugging why a consumer can't read a message a producer just sent.
@@ -104,7 +108,7 @@ python examples/protobuf_example.py
 python examples/jsonschema_example.py
 ```
 
-Each one prints out the serialized bytes and the decoded object, so you can literally watch a Python dict turn into binary and back. It's a small thing, but seeing the byte counts side by side does more to make the size argument real than any comparison table.
+The Avro and Protobuf ones print the serialized byte counts and the decoded objects, so you can literally watch a Python dict turn into binary and back; the JSON Schema one walks through validation passing and failing. It's a small thing, but seeing the byte counts side by side does more to make the size argument real than any comparison table.
 
 If you want the deeper write-up with every endpoint's full source and the client-side test code, the repo's reference doc walks through it end to end: [`docs/avro-protobuf-jsonschema-context.md`](https://github.com/wallaceespindola/avro-protobuf-jsonschema/blob/main/docs/avro-protobuf-jsonschema-context.md).
 

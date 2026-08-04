@@ -12,7 +12,7 @@
 
 Every service you build eventually has to answer one boring but expensive question: how do I put this data on the wire? Pick JSON everywhere and you'll pay for it in payload size and CPU cycles. Pick Protobuf everywhere and your public API becomes unreadable to anyone without the schema. Pick Avro everywhere and your frontend team will ask why they need a `.avsc` file to call a REST endpoint.
 
-The honest answer is that there's no single right format. There's a right format for each boundary in your system. I put together a small FastAPI project that exposes the exact same `User` payload through three endpoints — one for JSON, one for Protobuf and one for Avro — so I could stop arguing about this in the abstract and actually look at the trade-offs side by side. The full source, including tests and a Docker setup, lives in the [companion repo](https://github.com/wallaceespindola/avro-protobuf-jsonschema). This article walks through what I found.
+The honest answer is that there's no single right format. There's a right format for each boundary in your system. I put together a small FastAPI project that exposes the exact same `User` payload through three endpoints (one for JSON, one for Protobuf and one for Avro) so I could stop arguing about this in the abstract and actually look at the trade-offs side by side. The full source, including tests and a Docker setup, lives in the [companion repo](https://github.com/wallaceespindola/avro-protobuf-jsonschema). This article walks through what I found.
 
 ## Why the Format Choice Matters
 
@@ -26,11 +26,11 @@ Get it right, and each part of your system talks in the format that fits its con
 
 Before comparing them, here's what each format actually is, in plain terms.
 
-**Apache Avro** is a binary serialization format built around schema evolution. The schema and the data are closely tied together, which is why Avro shows up so often in Kafka and big data pipelines — you can change the schema over time and old and new consumers still agree on how to read the data.
+**Apache Avro** is a binary serialization format built around schema evolution. The schema and the data are closely tied together, which is why Avro shows up so often in Kafka and big data pipelines: you can change the schema over time and old and new consumers still agree on how to read the data.
 
 **Protocol Buffers (Protobuf)** is a compact binary format with `.proto` schema files and generated code. Google built it for fast, small, strongly-typed service-to-service communication, and it's the backbone of gRPC.
 
-**JSON Schema** isn't a serialization format at all — it's a way to describe and validate the structure of JSON documents. JSON itself is what actually goes over the wire, and it's still the most universally understood format because every browser, every language and every debugging tool can read it without help.
+**JSON Schema** isn't a serialization format at all. It's a way to describe and validate the structure of JSON documents. JSON itself is what actually goes over the wire, and it's still the most universally understood format because every browser, every language and every debugging tool can read it without help.
 
 ## Comparison at a Glance
 
@@ -45,7 +45,7 @@ Before comparing them, here's what each format actually is, in plain terms.
 | Typical ecosystem | REST, OpenAPI | gRPC, microservices | Kafka, Spark, Flink |
 | Best fit | Public/browser-facing APIs | Internal microservices | Data pipelines and streaming |
 
-This table is the same one from the project's [README](https://github.com/wallaceespindola/avro-protobuf-jsonschema/blob/main/README.md) and the [reference document](https://github.com/wallaceespindola/avro-protobuf-jsonschema/blob/main/docs/avro-protobuf-jsonschema-context.md). Nothing here is a benchmark number — it's a directional summary based on how each format is designed to behave, not a measured throughput figure from a specific machine.
+This table is the same one from the project's [README](https://github.com/wallaceespindola/avro-protobuf-jsonschema/blob/main/README.md) and the [reference document](https://github.com/wallaceespindola/avro-protobuf-jsonschema/blob/main/docs/avro-protobuf-jsonschema-context.md). Nothing here is a benchmark number. It's a directional summary based on how each format is designed to behave, not a measured throughput figure from a specific machine.
 
 ## Code Walkthrough: The Same User, Three Ways
 
@@ -107,10 +107,10 @@ message User {
 }
 ```
 
-Run `protoc --python_out=. user.proto` and you get generated Python classes you can serialize and parse directly:
+Run `protoc --python_out=. schemas/user.proto` (or `make proto` in the repo) and you get generated Python classes you can serialize and parse directly:
 
 ```python
-import user_pb2
+from schemas import user_pb2
 
 u = user_pb2.User(
     id=1,
@@ -127,11 +127,11 @@ u2.ParseFromString(data)
 print("Decoded:", u2)
 ```
 
-Notice the comment on `email` — proto3 doesn't distinguish "empty string" from "field not set" unless you explicitly use `optional` or wrapper types. That trips people up constantly when they migrate from proto2, where field presence was always tracked. If your business logic cares whether a field was actually sent versus just left at its zero value, don't skip this detail.
+Notice the comment on `email`: proto3 doesn't distinguish "empty string" from "field not set" unless you explicitly use `optional` or wrapper types. That trips people up constantly when they migrate from proto2, where field presence was always tracked. If your business logic cares whether a field was actually sent versus just left at its zero value, don't skip this detail.
 
 ### JSON Schema: Validation, Not Wire Format
 
-JSON Schema doesn't serialize anything — it validates a JSON document against a set of rules. Here's the schema and a quick validation check with `jsonschema`:
+JSON Schema doesn't serialize anything, it validates a JSON document against a set of rules. Here's the schema and a quick validation check with `jsonschema`:
 
 ```python
 from jsonschema import Draft202012Validator
@@ -160,7 +160,7 @@ for e in errors:
     print(f"- {path}: {e.message}")
 ```
 
-In a FastAPI project you rarely write this by hand — Pydantic models generate the JSON Schema for you and expose it through OpenAPI automatically. That's what the `/json/user` endpoint in the repo does.
+In a FastAPI project you rarely write this by hand. Pydantic models generate the JSON Schema for you and expose it through OpenAPI automatically. That's what the `/json/user` endpoint in the repo does.
 
 ## The FastAPI Endpoints: Same Payload, Three Content Types
 
@@ -207,7 +207,7 @@ async def protobuf_user(request: Request) -> Response:
     return Response(content=msg.SerializeToString(), media_type="application/x-protobuf")
 ```
 
-And the Avro endpoint, which uses "schemaless" encoding — meaning the bytes on the wire don't carry the schema with them, so the client and server both need to agree on it up front:
+And the Avro endpoint, which uses "schemaless" encoding, meaning the bytes on the wire don't carry the schema with them, so the client and server both need to agree on it up front:
 
 ```python
 AVRO_USER_SCHEMA = parse_schema(
@@ -253,9 +253,9 @@ Payload size gets all the attention in these comparisons, but schema evolution i
 
 **Avro** handles this the best of the three. Because the reader and writer schemas are compared at read time, you can add fields with defaults, remove fields or reorder them, and old data still decodes against a newer schema. That's exactly why it's the default choice in Kafka-based pipelines, often paired with a schema registry that tracks compatibility rules across versions.
 
-**Protobuf** does well too, with a different mechanism: field numbers. As long as you never reuse a field number and never change a field's type in an incompatible way, you can add and deprecate fields freely. The gotcha is proto3's field presence behavior — an unset scalar and its zero value look identical unless you use `optional`. If your evolution strategy depends on knowing whether a client actually sent a value, plan for that early.
+**Protobuf** does well too, with a different mechanism: field numbers. As long as you never reuse a field number and never change a field's type in an incompatible way, you can add and deprecate fields freely. The gotcha is proto3's field presence behavior: an unset scalar and its zero value look identical unless you use `optional`. If your evolution strategy depends on knowing whether a client actually sent a value, plan for that early.
 
-**JSON Schema** is the most flexible day-to-day, since JSON itself doesn't enforce a shape at all — you can add fields without touching old clients almost by accident. But that flexibility means schema evolution is a discipline you have to impose yourself, usually through API versioning and `additionalProperties: false` validation, rather than something the format enforces for you.
+**JSON Schema** is the most flexible day-to-day, since JSON itself doesn't enforce a shape at all: you can add fields without touching old clients almost by accident. But that flexibility means schema evolution is a discipline you have to impose yourself, usually through API versioning and `additionalProperties: false` validation, rather than something the format enforces for you.
 
 ## Use-Case Selection Guidance
 
@@ -295,34 +295,32 @@ flowchart TD
 | Green | Internal service-to-service calls | Protobuf + gRPC |
 | Purple | Event streaming / data platform | Avro + Kafka + Schema Registry |
 
-This isn't over-engineering — it's matching each format to what that layer actually needs. The gateway is the translation boundary, converting readable JSON at the edge into compact Protobuf internally, and eventually into Avro when data lands on a stream or in long-term storage.
+This isn't over-engineering. It's matching each format to what that layer actually needs. The gateway is the translation boundary, converting readable JSON at the edge into compact Protobuf internally, and eventually into Avro when data lands on a stream or in long-term storage.
 
 ## Trade-Offs and Gotchas
 
 No format wins on every axis, so here's what to watch for before you commit:
 
 - **JSON Schema** payloads are noticeably larger and slower to parse than binary formats, and validation is a separate step you have to wire in yourself (Pydantic does this well, but plain JSON doesn't validate itself).
-- **Protobuf** requires a build step (`protoc`) in your pipeline, and generated code needs to be regenerated and redistributed whenever the schema changes — that's an extra moving part compared to JSON's "just send a dict."
-- **Avro** for HTTP use cases usually means schemaless encoding, which means the client and server must already agree on the exact schema — there's no self-describing envelope unless you add one (the Avro container file format does include the schema, but that's rarely how you'd use it over HTTP).
+- **Protobuf** requires a build step (`protoc`) in your pipeline, and generated code needs to be regenerated and redistributed whenever the schema changes. That's an extra moving part compared to JSON's "just send a dict."
+- **Avro** for HTTP use cases usually means schemaless encoding, which means the client and server must already agree on the exact schema: there's no self-describing envelope unless you add one (the Avro container file format does include the schema, but that's rarely how you'd use it over HTTP).
 - All three still need application-level validation. None of these formats replace checking that `id >= 1` or that `name` isn't empty — you can see that in the repo's endpoints, where each one enforces the same business rule regardless of wire format.
 
 ## Summary
 
-- JSON Schema is your best bet for public and browser-facing APIs — nothing beats a payload every tool can already read.
+- JSON Schema is your best bet for public and browser-facing APIs: nothing beats a payload every tool can already read.
 - Protobuf wins on raw performance and payload size for internal service-to-service traffic, especially with gRPC.
 - Avro's schema evolution model makes it the natural fit for Kafka and long-lived data pipelines.
-- Schema evolution, not payload size, is usually the deciding factor that bites you months after launch — plan for it up front.
+- Schema evolution, not payload size, is usually the deciding factor that bites you months after launch, so plan for it up front.
 - You don't have to choose one format for your whole system; boundary-driven selection (JSON at the edge, Protobuf internally, Avro on the stream) is a proven, practical pattern, not overkill.
 
 If you want to run any of this yourself, the full FastAPI project — with all three endpoints, the `.proto` schema, standalone examples and a pytest suite — is in the [companion repo](https://github.com/wallaceespindola/avro-protobuf-jsonschema). Clone it, run `make run` and hit `/docs` to try the endpoints directly.
 
-What's your approach to picking a serialization format at each boundary? Drop your experience in the comments — I'd like to hear where the trade-offs bit you.
+What's your approach to picking a serialization format at each boundary? Drop your experience in the comments. I'd like to hear where the trade-offs bit you.
 
-```
 Need more tech insights?
 Check out my GitHub, LinkedIn, and Speaker Deck.
 Happy coding!
-```
 
 - GitHub: https://github.com/wallaceespindola/
 - LinkedIn: https://www.linkedin.com/in/wallaceespindola/

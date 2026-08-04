@@ -42,7 +42,7 @@ Here's the comparison table from the project's reference doc:
 | Browser support | Yes | No | No |
 | Typical use case | Public APIs | Microservices | Data pipelines |
 
-None of these numbers are made up rankings, they're consistent with how each format was designed to work: JSON for readability, Protobuf for speed and small payloads, Avro for long-lived schema evolution.
+None of these rankings are invented, they're consistent with how each format was designed to work: JSON for readability, Protobuf for speed and small payloads, Avro for long-lived schema evolution.
 
 ## Seeing it in code, not just in a table
 
@@ -58,6 +58,8 @@ AVRO_USER_SCHEMA = parse_schema({
     "fields": [
         {"name": "id", "type": "long"},
         {"name": "name", "type": "string"},
+        {"name": "email", "type": ["null", "string"], "default": None},
+        {"name": "is_active", "type": "boolean", "default": True},
     ],
 })
 ```
@@ -67,7 +69,9 @@ The Protobuf endpoint checks the content type before it even tries to parse the 
 ```python
 ct = request.headers.get("content-type", "").split(";")[0].strip()
 if ct not in ("application/x-protobuf", "application/octet-stream"):
-    raise HTTPException(status_code=415, detail="Use Content-Type: application/x-protobuf")
+    raise HTTPException(
+        status_code=415, detail="Use Content-Type: application/x-protobuf or application/octet-stream"
+    )
 ```
 
 Small detail, but it matters: binary formats don't self-describe the way JSON does, so your API has to be explicit about what it expects. That's a real design cost you take on when you leave text formats behind.

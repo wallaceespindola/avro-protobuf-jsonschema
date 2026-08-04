@@ -76,7 +76,7 @@ Both approaches solve the same underlying problem — decoupling the pace of pro
 
 ## Protobuf on the JVM: Codegen, Builders, and gRPC
 
-On the Java side, Protobuf's code generation is where the schema becomes something your IDE understands. You wire `protoc` into your Maven build with the [`protobuf-maven-plugin`](https://central.sonatype.com/artifact/org.xolstice.maven.plugins/protobuf-maven-plugin) from Xolstice, which is the plugin most Java shops reach for:
+On the Java side, Protobuf's code generation is where the schema becomes something your IDE understands. You wire `protoc` into your Maven build with the [`protobuf-maven-plugin`](https://central.sonatype.com/artifact/org.xolstice.maven.plugins/protobuf-maven-plugin) from Xolstice, the long-standing community plugin for this job:
 
 ```xml
 <build>
@@ -110,7 +110,7 @@ On the Java side, Protobuf's code generation is where the schema becomes somethi
 </build>
 ```
 
-Point `protoSourceRoot` at the same `schemas/user.proto` file from the companion repo, and `mvn generate-sources` produces a `com.example.User` class with a builder API. Using it looks like this:
+Point `protoSourceRoot` at the same `schemas/user.proto` file from the companion repo, and `mvn generate-sources` produces a `com.example.User` class with a builder API. One Java-specific detail: add `option java_multiple_files = true;` to the `.proto` file first, or protoc will nest the `User` message inside a generated outer wrapper class instead of emitting a top-level `com.example.User`. Using it looks like this:
 
 ```java
 package com.example.demo;
@@ -150,6 +150,7 @@ Where Protobuf really shows up in a Java enterprise stack is gRPC. If you're run
 package com.example.demo.grpc;
 
 import com.example.User;
+import com.example.UserRequest;
 import com.example.UserServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -178,7 +179,7 @@ That `UserServiceGrpc.UserServiceImplBase` class is generated straight from a `.
 
 Avro's Java story splits into two APIs, and picking the right one matters more than it looks.
 
-**`SpecificRecord`** generates a concrete Java class per schema, the same way Protobuf does. You wire the [`avro-maven-plugin`](https://mvnrepository.com/artifact/org.apache.avro/avro-maven-plugin) into your build, point it at a directory of `.avsc` files (the same schema shown above works unchanged), and it produces a typed `User` class with getters and a builder:
+**`SpecificRecord`** generates a concrete Java class per schema, the same way Protobuf does. You wire the [`avro-maven-plugin`](https://central.sonatype.com/artifact/org.apache.avro/avro-maven-plugin) into your build, point it at a directory of `.avsc` files (the same schema shown above works unchanged), and it produces a typed `User` class with getters and a builder:
 
 ```xml
 <plugin>
@@ -219,6 +220,8 @@ That's the version you want when you control both the producer and the schema, a
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
+
+import java.io.File;
 
 Schema schema = new Schema.Parser().parse(new File("user.avsc"));
 
@@ -347,7 +350,7 @@ The full working code — schemas, standalone serialization examples, and a runn
 - Apache Avro 1.12.0 Specification — [avro.apache.org](https://avro.apache.org/docs/1.12.0/specification/)
 - Confluent Schema Registry: Schema Evolution and Compatibility — [docs.confluent.io](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html)
 - protobuf-maven-plugin (Xolstice) — [Maven Central](https://central.sonatype.com/artifact/org.xolstice.maven.plugins/protobuf-maven-plugin)
-- avro-maven-plugin — [Maven Repository](https://mvnrepository.com/artifact/org.apache.avro/avro-maven-plugin)
+- avro-maven-plugin — [Maven Central](https://central.sonatype.com/artifact/org.apache.avro/avro-maven-plugin)
 - grpc-spring: Spring Boot starter for gRPC — [GitHub](https://github.com/grpc-ecosystem/grpc-spring)
 - networknt/json-schema-validator — [GitHub](https://github.com/networknt/json-schema-validator)
 - gRPC Java documentation — [grpc.io](https://grpc.io/docs/languages/java/)
@@ -365,4 +368,3 @@ Reach him on [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) or check 
 Need more tech insights?
 Check out my GitHub, LinkedIn, and Speaker Deck.
 Happy coding!
-</content>
