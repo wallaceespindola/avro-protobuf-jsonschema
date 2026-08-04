@@ -36,5 +36,5 @@ A PDF export also uploads to Google Drive and presents fine, and Speaker Deck ac
 
 ---
 
-Author: Wallace Espindola — wallace.espindola@gmail.com
+Author: Wallace Espindola — <wallace.espindola@gmail.com>
 Repo: <https://github.com/wallaceespindola/avro-protobuf-jsonschema>

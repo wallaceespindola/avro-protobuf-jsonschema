@@ -82,7 +82,7 @@ That last point is worth sitting with for a second. With JSON and Pydantic, the 
 
 I put all of this into a working repo instead of leaving it as a slide deck nobody runs:
 
-**https://github.com/wallaceespindola/avro-protobuf-jsonschema**
+**<https://github.com/wallaceespindola/avro-protobuf-jsonschema>**
 
 It's a real FastAPI app, not a snippet collection. Clone it, and you get:
 
@@ -148,6 +148,6 @@ Happy coding!
 
 — Wallace
 
-GitHub: https://github.com/wallaceespindola/
-LinkedIn: https://www.linkedin.com/in/wallaceespindola/
-Email: wallace.espindola@gmail.com
+GitHub: <https://github.com/wallaceespindola/>
+LinkedIn: <https://www.linkedin.com/in/wallaceespindola/>
+Email: <wallace.espindola@gmail.com>

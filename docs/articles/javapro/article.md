@@ -4,7 +4,7 @@
 
 **By Wallace Espindola**
 Senior Software Engineer / Solution Architect
-wallace.espindola@gmail.com | [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) | [GitHub](https://github.com/wallaceespindola/)
+<wallace.espindola@gmail.com> | [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) | [GitHub](https://github.com/wallaceespindola/)
 
 ---
 

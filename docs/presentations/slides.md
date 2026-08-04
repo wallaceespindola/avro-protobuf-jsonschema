@@ -29,7 +29,7 @@ style: |
 **Wallace Espindola**
 Sr. Software Engineer / Solution Architect
 
-wallace.espindola@gmail.com
+<wallace.espindola@gmail.com>
 linkedin.com/in/wallaceespindola | github.com/wallaceespindola
 
 ---
@@ -123,10 +123,12 @@ From this repo: `schemas/user.proto` → `protoc --python_out=. user.proto`
 # Encoding: text vs binary
 
 **JSON — text**
+
 - You can read it, debug it in any browser tab, `curl` it by hand
 - Field names repeat in every single payload — verbose on the wire
 
 **Protobuf & Avro — binary**
+
 - No field names on the wire: numbers (Protobuf) or field order (Avro)
 - Much smaller payloads, but you need the schema to make sense of bytes
 - Debugging means tooling, not eyeballs
@@ -270,7 +272,7 @@ github.com/wallaceespindola/avro-protobuf-jsonschema
 **Reference doc:** `docs/avro-protobuf-jsonschema-context.md`
 
 **Wallace Espindola**
-wallace.espindola@gmail.com
+<wallace.espindola@gmail.com>
 linkedin.com/in/wallaceespindola | github.com/wallaceespindola
 
 *Thanks! Questions?*

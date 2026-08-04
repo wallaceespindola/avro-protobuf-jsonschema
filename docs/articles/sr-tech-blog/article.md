@@ -2,7 +2,7 @@
 
 # One FastAPI App, Three Wire Formats: Lessons from Serving JSON, Protobuf and Avro Side by Side
 
-*By Wallace Espindola — wallace.espindola@gmail.com — [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) — [GitHub](https://github.com/wallaceespindola/)*
+*By Wallace Espindola — <wallace.espindola@gmail.com> — [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) — [GitHub](https://github.com/wallaceespindola/)*
 
 Companion repo: [github.com/wallaceespindola/avro-protobuf-jsonschema](https://github.com/wallaceespindola/avro-protobuf-jsonschema)
 

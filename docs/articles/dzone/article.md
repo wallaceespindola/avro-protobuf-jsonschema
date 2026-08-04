@@ -3,10 +3,10 @@
 ![Banner](banner.png)
 
 **Author**: Wallace Espindola
-**Email**: wallace.espindola@gmail.com
-**LinkedIn**: https://www.linkedin.com/in/wallaceespindola/
-**GitHub**: https://github.com/wallaceespindola/
-**Companion repo**: https://github.com/wallaceespindola/avro-protobuf-jsonschema
+**Email**: <wallace.espindola@gmail.com>
+**LinkedIn**: <https://www.linkedin.com/in/wallaceespindola/>
+**GitHub**: <https://github.com/wallaceespindola/>
+**Companion repo**: <https://github.com/wallaceespindola/avro-protobuf-jsonschema>
 
 ---
 
@@ -322,5 +322,5 @@ Need more tech insights?
 Check out my GitHub, LinkedIn, and Speaker Deck.
 Happy coding!
 
-- GitHub: https://github.com/wallaceespindola/
-- LinkedIn: https://www.linkedin.com/in/wallaceespindola/
+- GitHub: <https://github.com/wallaceespindola/>
+- LinkedIn: <https://www.linkedin.com/in/wallaceespindola/>

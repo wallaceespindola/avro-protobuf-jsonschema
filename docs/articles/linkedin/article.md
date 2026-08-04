@@ -1,5 +1,4 @@
 ---
-title: "Avro vs Protobuf vs JSON Schema: Which One Belongs in Your Architecture?"
 author: Wallace Espindola
 email: wallace.espindola@gmail.com
 linkedin: https://www.linkedin.com/in/wallaceespindola/
@@ -119,7 +118,7 @@ Need more tech insights?
 Check out my GitHub, LinkedIn, and Speaker Deck.
 Happy coding!
 
-GitHub: https://github.com/wallaceespindola/
-LinkedIn: https://www.linkedin.com/in/wallaceespindola/
+GitHub: <https://github.com/wallaceespindola/>
+LinkedIn: <https://www.linkedin.com/in/wallaceespindola/>
 
-#softwarearchitecture #java #python #microservices #softwareengineering #apache #grpc
+**#softwarearchitecture #java #python #microservices #softwareengineering #apache #grpc**

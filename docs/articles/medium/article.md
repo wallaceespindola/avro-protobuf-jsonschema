@@ -1,6 +1,6 @@
 # The Serialization Showdown: Avro, Protobuf and JSON Schema in Real Code
 
-### Three ways to define a data contract, one working FastAPI app to test them all — here's what I learned wiring up each one
+*Three ways to define a data contract, one working FastAPI app to test them all — here's what I learned wiring up each one*
 
 ![Banner](banner.png)
 
