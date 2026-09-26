@@ -6,11 +6,11 @@ from app.config import Settings, get_settings
 
 
 def test_settings_defaults() -> None:
-    """Test settings have correct default values."""
-    settings = Settings()
+    """Test settings have correct default values (ignoring any local .env)."""
+    settings = Settings(_env_file=None)
 
     assert settings.author_name == "Wallace Espindola"
-    assert settings.author_email == "wallace@example.com"
+    assert settings.author_email == "wallace.espindola@gmail.com"
     assert settings.author_title == "Sr. Software Engineer / Solution Architect"
     assert settings.app_title == "Schemas Demo: JSON vs Protobuf vs Avro"
     assert settings.app_version == "0.1.0"
