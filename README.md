@@ -10,12 +10,42 @@
 [![Avro](https://img.shields.io/badge/Apache%20Avro-schema%20evolution-231F20?logo=apache&logoColor=white)](https://avro.apache.org/)
 [![Tests](https://img.shields.io/badge/tests-34%20passing-brightgreen)](tests/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![CI](https://github.com/wallaceespindola/avro-protobuf-jsonschema/actions/workflows/ci.yml/badge.svg)](https://github.com/wallaceespindola/avro-protobuf-jsonschema/actions/workflows/ci.yml)
 
 Most format comparisons stop at a table. This project goes further: the same `User` payload served over JSON, Protocol Buffers and Apache Avro from a single API, with standalone examples, test clients and a full test suite. Clone it, run it, inspect the bytes yourself.
 
 ---
 
+## Table of Contents
+
+- [Tech Stack](#-tech-stack)
+- [Quick Start](#-quick-start)
+- [The Three Endpoints](#-the-three-endpoints)
+- [Format Comparison](#️-format-comparison)
+- [Try Each Format Standalone](#-try-each-format-standalone)
+- [Testing](#-testing)
+- [Docker](#-docker)
+- [Development](#️-development)
+- [Project Layout](#-project-layout)
+- [Author](#-author)
+- [License](#-license)
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Language | Python 3.11+ (CI matrix: 3.10, 3.11, 3.12; Docker image: `python:3.11-slim`) |
+| Web framework | FastAPI + Uvicorn, Pydantic v2, pydantic-settings |
+| JSON | Pydantic models + OpenAPI-generated JSON Schema, `jsonschema` for standalone validation |
+| Protobuf | `protobuf` runtime, `protoc` code generation from [`schemas/user.proto`](schemas/user.proto) |
+| Avro | `fastavro` (schemaless encoding, schema defined in [`app/main.py`](app/main.py)) |
+| Testing | pytest, pytest-asyncio, pytest-cov, httpx |
+| Quality | black, isort, ruff, mypy, bandit, pre-commit |
+| Tooling | uv, Make, Docker, GitHub Actions |
+
 ## 🚀 Quick Start
+
+**Prerequisites:** Python 3.11+, [uv](https://docs.astral.sh/uv/), `protoc` (Protobuf compiler) and optionally Docker.
 
 ```bash
 git clone https://github.com/wallaceespindola/avro-protobuf-jsonschema.git
@@ -52,6 +82,15 @@ Once running:
 | <http://localhost:8000/docs> | Swagger UI |
 | <http://localhost:8000/redoc> | ReDoc |
 | <http://localhost:8000/health> | Health check |
+| <http://localhost:8000/> | API info (version, author, endpoint list) |
+
+```bash
+curl http://localhost:8000/health
+# {"status":"healthy","protobuf_available":true}
+```
+
+`protobuf_available` is `false` until `make proto` has generated `schemas/user_pb2.py`; in that state
+`POST /protobuf/user` returns `503`.
 
 ## 🔌 The Three Endpoints
 
@@ -67,7 +106,7 @@ curl -X POST http://localhost:8000/json/user \
 
 ### `POST /protobuf/user` — Protocol Buffers
 
-Compact binary, generated from [`schemas/user.proto`](schemas/user.proto). `Content-Type: application/x-protobuf`
+Compact binary, generated from [`schemas/user.proto`](schemas/user.proto). `Content-Type: application/x-protobuf` (or `application/octet-stream`)
 
 ```bash
 python clients/test_protobuf_endpoint.py
@@ -75,11 +114,16 @@ python clients/test_protobuf_endpoint.py
 
 ### `POST /avro/user` — Apache Avro
 
-Binary with first-class schema evolution. `Content-Type: application/avro`
+Binary with first-class schema evolution. `Content-Type: application/avro` (or `application/octet-stream`)
 
 ```bash
 python clients/test_avro_endpoint.py
 ```
+
+All three endpoints echo the `User` back in the same format and return `422` when `id < 1`. The binary endpoints
+also return `415` for a wrong `Content-Type` and `400` for a payload that fails to decode.
+
+Run all three clients against a running server with `make clients`.
 
 ## ⚖️ Format Comparison
 
@@ -154,7 +198,7 @@ make lint      # ruff
 make ci        # lint + type-check + tests
 ```
 
-Configuration lives in `.env` (author metadata shown in the API docs and root endpoint) — copy from the template and edit.
+Configuration is read from an optional `.env` file via pydantic-settings ([`app/config.py`](app/config.py)): author metadata and app title/version shown in the API docs and root endpoint. Every setting has a default, so the app runs without it; `setup.sh` copies [`.env.example`](.env.example) as a starting point.
 
 <details>
 <summary><b>Troubleshooting</b></summary>
@@ -178,11 +222,6 @@ Configuration lives in `.env` (author metadata shown in the API docs and root en
 └── Makefile
 ```
 
-## 📄 License
-
-- Released under the [Apache 2.0 License](LICENSE)
-- Copyright © 2026 [Wallace Espindola](https://github.com/wallaceespindola/)
-
 ## 👤 Author
 
 **Wallace Espindola** — Sr. Software Engineer / Solution Architect / Java & Python Dev
@@ -203,6 +242,11 @@ Configuration lives in `.env` (author metadata shown in the API docs and root en
 - **Substack:** [wallaceespindola.substack.com](https://wallaceespindola.substack.com/)
 - **Medium:** [medium.com/@wallaceespindola](https://medium.com/@wallaceespindola)
 - **Slides:** [speakerdeck.com/wallacese](https://speakerdeck.com/wallacese)
+
+## 📄 License
+
+- Released under the [Apache 2.0 License](LICENSE)
+- Copyright © 2026 [Wallace Espindola](https://github.com/wallaceespindola/)
 
 ---
 

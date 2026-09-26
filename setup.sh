@@ -45,7 +45,7 @@ uv pip install -r requirements.txt
 if [ ! -f .env ]; then
     echo ""
     echo "📝 Creating .env file from .env.example..."
-    cp .env .env
+    cp .env.example .env
     echo "✅ Created .env file. Please edit it with your information."
 else
     echo ""
@@ -63,7 +63,7 @@ echo ""
 echo "✅ Setup complete!"
 echo ""
 echo "Next steps:"
-echo "  1. Edit .env with your author information"
+echo "  1. (Optional) Edit .env to override author/app metadata"
 echo "  2. Activate virtual environment: source .venv/bin/activate"
 echo "  3. Run the server: make run"
 echo "  4. Visit http://localhost:8000/docs"

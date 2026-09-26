@@ -6,7 +6,7 @@ authors = [
     {name = "Wallace Espindola", email = "wallace.espindola@gmail.com"}
 ]
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "Apache-2.0"}
 requires-python = ">=3.11"
 keywords = ["avro", "protobuf", "json-schema", "fastapi", "serialization"]
 classifiers = [

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     # Author Information
     author_name: str = "Wallace Espindola"
-    author_email: str = "wallace@example.com"
+    author_email: str = "wallace.espindola@gmail.com"
     author_title: str = "Sr. Software Engineer / Solution Architect"
     author_bio: str = "Full-stack developer specializing in Python, Java, and JavaScript"
 

@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   api:
     build:
-      context: schemas-demo
+      context: .
       dockerfile: Dockerfile
     container_name: schemas-demo-api
     ports:
