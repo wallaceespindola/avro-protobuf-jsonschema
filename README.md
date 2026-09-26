@@ -1,3 +1,5 @@
+![Python](https://www.python.org/static/community_logos/python-logo-generic.svg)
+
 # ⚡ Avro vs Protobuf vs JSON Schema
 
 **One FastAPI app. Three serialization formats. Real, runnable code.**
