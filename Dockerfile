@@ -1,6 +1,6 @@
 # Multi-stage build for schemas-demo FastAPI application
 
-FROM python:3.11-slim as builder
+FROM python:3.14-slim as builder
 
 # Install system dependencies including protoc
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -23,7 +23,7 @@ RUN protoc --python_out=. --pyi_out=. schemas/user.proto
 COPY app ./app/
 
 # Final stage
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
