@@ -349,4 +349,4 @@ Before committing:
 
 ---
 
-**Questions?** See the main [README.md](README.md) or open an issue.
+**Questions?** See the main [README.md](../README.md) or open an issue.

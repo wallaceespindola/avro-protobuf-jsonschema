@@ -350,7 +350,7 @@ complete -W "$(make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($
 ## Need Help?
 
 - Run `make help` for command list
-- Check [README.md](README.md) for full documentation
+- Check [README.md](../README.md) for full documentation
 - Check [TESTING.md](TESTING.md) for testing guide
 - See [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) for overview
 

@@ -208,7 +208,7 @@ This project follows patterns from the AI Agents Framework:
 
 ### Python Development
 
-- **Agent**: Python Developer ([`ai/agents/python-developer/AGENT.md`](.ai/agents/python-developer/AGENT.md))
+- **Agent**: Python Developer (`.ai/agents/python-developer/AGENT.md`, local only)
 - **Skills**:
   - `python-coder` - Complete project generation
   - `python-code-review` - Code quality standards
@@ -233,7 +233,7 @@ This project follows patterns from the AI Agents Framework:
 
 ### DevOps
 
-- **Agent**: DevOps Engineer ([`ai/agents/devops-engineer/AGENT.md`](.ai/agents/devops-engineer/AGENT.md))
+- **Agent**: DevOps Engineer (`.ai/agents/devops-engineer/AGENT.md`, local only)
 - **Skills**:
   - `docker-setup` - Multi-stage Dockerfile
   - `cicd-pipeline-setup` - GitHub Actions ready
@@ -305,9 +305,9 @@ avro-protobuf-jsonschema/
 
 ## Resources
 
-- **Reference Document**: [`../avro-protobuf-jsonschema-context.md`](docs/avro-protobuf-jsonschema-context.md)
-- **AI Agents**: [`../ai/AGENTS.md`](.ai/AGENTS.md)
-- **Repository Guide**: [`../CLAUDE.md`](CLAUDE.md)
+- **Reference Document**: [`avro-protobuf-jsonschema-context.md`](avro-protobuf-jsonschema-context.md)
+- **AI Agents**: `.ai/AGENTS.md` (local only)
+- **Repository Guide**: `CLAUDE.md` (local only)
 
 ---
 
