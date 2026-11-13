@@ -355,4 +355,4 @@ Need more tech insights?
 Check out my GitHub, LinkedIn, and Speaker Deck.
 Happy coding!
 
-[GitHub](https://github.com/wallaceespindola/) · [LinkedIn](https://www.linkedin.com/in/wallaceespindola/)
+[GitHub](https://github.com/wallaceespindola/) · [LinkedIn](https://www.linkedin.com/in/wallaceespindola/) · Email: <wallace.espindola@gmail.com>

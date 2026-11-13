@@ -120,5 +120,6 @@ Happy coding!
 
 GitHub: <https://github.com/wallaceespindola/>
 LinkedIn: <https://www.linkedin.com/in/wallaceespindola/>
+Email: <wallace.espindola@gmail.com>
 
 **#softwarearchitecture #java #python #microservices #softwareengineering #apache #grpc**
