@@ -163,6 +163,4 @@ Contact: [wallace.espindola@gmail.com](mailto:wallace.espindola@gmail.com) · [L
 
 ---
 
-**AI disclosure**: This article was drafted with AI assistance (Claude) for outlining, drafting and grammar/clarity review, based on the author's own reference repository and code. All technical claims were verified against the cited primary sources and the linked codebase.
-
 **Publishing note**: This article is submitted for InfoQ's 4-week exclusive publishing window. It will not be cross-posted to other platforms until that window closes.
